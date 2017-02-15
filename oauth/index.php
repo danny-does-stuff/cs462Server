@@ -50,7 +50,8 @@
 
 	.checkin {
 		margin-top: 8px;
-		width: 400px;
+		padding: 8px;
+		width: 300px;
 		background-color: #f5f5f5;
 		border-radius: 3px;
 		box-shadow: 3px, 3px, 3px, gray;
