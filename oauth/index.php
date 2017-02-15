@@ -15,7 +15,7 @@
 	}
 
 	#header {
-		height: 30px;
+		height: 50px;
 		background-color: #3160df;
 	}
 
@@ -39,6 +39,8 @@
 
 	.user {
 		cursor: pointer;
+		font-weight: bold;
+		padding-top: 8px;
 	}
 
 	#right-content {
@@ -53,6 +55,7 @@
 		border-radius: 12px;
 		cursor: pointer;
 		color: white;
+		margin-top: 16px;
 	}
 
 </style>
@@ -121,7 +124,7 @@
 	});
 
 <?php
-	if (array_key_exists('foursquareID', $_SESSION)) {
+	if (array_key_exists('accessToken', $_SESSION)) {
 		echo "var accessToken = '{$_SESSION['accessToken']}'; \n";
 ?>
 		displayCurrentUsersCheckins();
@@ -133,11 +136,11 @@
 		if (accessToken) {
 			$('#account').html('Loading...');
 			$.ajax({
-				url: 'https://api.foursquare.com/v2/users/self/venuehistory?oauth_token=' + accessToken + '&v=20170213',
+				url: 'https://api.foursquare.com/v2/users/self/checkins?oauth_token=' + accessToken + '&v=20170213',
 				success: function(data) {
 					$('#account').html('<span class="header">My Checkins</span>');
 
-					data.response.venues.items.forEach(function(checkin) {
+					data.response.checkins.items.forEach(function(checkin) {
 						appendCheckin(checkin.venue.name, checkin.venue.stats.checkinsCount);
 					});
 				}

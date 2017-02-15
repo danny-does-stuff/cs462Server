@@ -3,7 +3,6 @@ if (session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
 
-
 $clientID = 'LTNHKGWBGBQ1AOE2KZ1N1JM32H2I0C5H0XG4AYJHH5MISCA1';
 $clientSecret = 'BM2HK13RXDQWTHCDMMJTYSCJ0UIVBBDNTKLJXSN4PJNJVETT';
 $code = $_GET['code'];
