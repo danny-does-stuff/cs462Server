@@ -16,7 +16,7 @@
 
 	#header {
 		height: 30px;
-		background-color: #555;
+		background-color: #3160df;
 	}
 
 	#content {
@@ -30,12 +30,23 @@
 		background-color: #a5a5a5;
 	}
 
+	.header {
+		font-size: 20px;
+		font-weight: bold;
+		margin-bottom: 8px;
+		display: block;
+	}
+
+	.user {
+		cursor: pointer;
+	}
+
 	#right-content {
 		width: 80%;
 		padding: 8px;
 	}
 
-	#foursquare-login {
+	.button {
 		background-color: #3160df;
 		padding: 8px;
 		display: inline-block;
@@ -52,7 +63,7 @@
 
 <div id="content">
 	<div id="left-content">
-		<span style="font-size: 20px; font-weight: bold; margin-bottom: 8px; display: block;">Users</span>
+		<span class="header">Users</span>
 		<?php
 
 		$dir = new DirectoryIterator(__DIR__ . '/users');
@@ -62,7 +73,12 @@
 				<div id="user">
 					<?php
 					$user = json_decode(file_get_contents($fileinfo->getPathName()), true);
-					echo "<div id='{$user['id']}' onclick='displayUserCheckin({$user['id']})'>{$user['firstName']} {$user['lastName']}</div>"
+					$div = "<div id='{$user['id']}' class='user' onclick='displayUserCheckin(\"{$user['id']}\")'>{$user['firstName']}";
+					if (array_key_exists('lastName', $user)) {
+						$div .= " {$user['lastName']}";
+					}
+					$div .= "</div>";
+					echo $div;
 					?>
 				</div>
 				<?php
@@ -75,17 +91,14 @@
 		<div id="account"></div>
 		<?php
 		if (!array_key_exists('foursquareID', $_SESSION)) {
-			// var_dump($_SESSION);
 		?>
-		<div id="foursquare-login">Foursquare Login</div>
+		<div id="foursquare-login" class="button">Foursquare Login</div>
 		<?php
-		}/*
-			
-
-			// 
-			// var_dump($user);
-			// echo "<br><br>";
-		}*/
+		} else {
+		?>
+		<div id="foursquare-logout" class="button">Logout</div>
+		<?php
+		}
 		?>
 	</div>
 </div>
@@ -98,13 +111,20 @@
 		window.location.href = `https://foursquare.com/oauth2/authenticate?client_id=${clientID}&response_type=code&redirect_uri=https://462.danny-harding.com/oauth/redirect/code.php`;
 	});
 
+	$('#foursquare-logout').click(function() {
+		// $.ajax({
+		// 	url: '/oauth/logout.php',
+		// 	success: function(data) {
+				window.location.href = '/oauth/logout.php';
+		// 	}
+		// })
+	});
+
 <?php
 	if (array_key_exists('foursquareID', $_SESSION)) {
 		echo "var accessToken = '{$_SESSION['accessToken']}'; \n";
 ?>
-
 		displayCurrentUsersCheckins();
-		
 <?php
 	}
 ?>
@@ -115,17 +135,10 @@
 			$.ajax({
 				url: 'https://api.foursquare.com/v2/users/self/venuehistory?oauth_token=' + accessToken + '&v=20170213',
 				success: function(data) {
-					console.log(data.response.venues.items);
-					var checkins = data.response.venues.items;
-					var $account = $('#account');
+					$('#account').html('<span class="header">My Checkins</span>');
 
-					$account.empty();
-					checkins.forEach(function(checkin) {
-						var $checkin = $('<div class="checkin">').appendTo($account);
-
-						$('<div class="name">').html(checkin.venue.name).appendTo($checkin);
-
-						$('<div class="checkins-count">').html('# of checkins: ' + checkin.venue.stats.checkinsCount).appendTo($checkin);
+					data.response.venues.items.forEach(function(checkin) {
+						appendCheckin(checkin.venue.name, checkin.venue.stats.checkinsCount);
 					});
 				}
 			});
@@ -135,12 +148,31 @@
 	}
 
 	function displayUserCheckin(id) {
-		$.ajax({
-			url: '/oauth/redirect/user.php?id=' + id,
-			success: function(data) {
-				console.log(data);
-			}
-		});
+		if (id == <?php echo "'{$_SESSION['foursquareID']}'" ?>) {
+			displayCurrentUsersCheckins();
+		} else {
+			$.ajax({
+				url: '/oauth/redirect/user.php?id=' + id,
+				success: function(data) {
+					$('#account').html('<span class="header">' + data.firstName + (data.lastName ? ` ${data.lastName}` : '') + '\'s Last Checkin</span>');
+					if (data.checkins.items[0]) {
+						appendCheckin(data.checkins.items[0].venue.name, data.checkins.items[0].venue.stats.checkinsCount)
+					} else {
+						appendCheckin('No Checkins!', '');
+					}
+				}
+			});
+		}
+	}
+
+	function appendCheckin(name, count) {
+		var $account = $('#account');
+
+		var $checkin = $('<div class="checkin">').appendTo($account);
+
+		$('<div class="name">').html(name).appendTo($checkin);
+
+		$('<div class="checkins-count">').html('# of checkins: ' + count).appendTo($checkin);
 	}
 </script>
 </html>
