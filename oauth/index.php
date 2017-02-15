@@ -148,9 +148,15 @@
 	}
 
 	function displayUserCheckin(id) {
+		<?php
+			if (array_key_exists('foursquareID', $_SESSION)) {
+		?>
 		if (id == <?php echo "'{$_SESSION['foursquareID']}'" ?>) {
 			displayCurrentUsersCheckins();
 		} else {
+		<?php
+		}
+		?>
 			$.ajax({
 				url: '/oauth/redirect/user.php?id=' + id,
 				success: function(data) {
@@ -162,7 +168,14 @@
 					}
 				}
 			});
+		<?php
+		if (array_key_exists('foursquareID', $_SESSION)) {
+		?>
 		}
+		<?php
+		}
+		?>
+
 	}
 
 	function appendCheckin(name, count) {
