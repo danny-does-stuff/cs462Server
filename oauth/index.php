@@ -95,7 +95,7 @@
 	var clientID = 'LTNHKGWBGBQ1AOE2KZ1N1JM32H2I0C5H0XG4AYJHH5MISCA1';
 
 	$('#foursquare-login').click(function() {
-		window.location.href = `https://foursquare.com/oauth2/authenticate?client_id=${clientID}&response_type=code&redirect_uri=http://localhost:8888/oauth/redirect/code.php`;
+		window.location.href = `https://foursquare.com/oauth2/authenticate?client_id=${clientID}&response_type=code&redirect_uri=https://462.danny-harding.com/oauth/redirect/code.php`;
 	});
 
 <?php
