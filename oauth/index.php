@@ -48,6 +48,21 @@
 		padding: 8px;
 	}
 
+	.checkin {
+		padding-top: 8px;
+		background-color: #f5f5f5;
+		border-radius: 3px;
+		box-shadow: 3px, 3px, 3px, gray;
+	}
+
+	.name {
+		font-weight: bold;
+	}
+
+	.checkins-count {
+		font-size: 15px;
+	}
+
 	.button {
 		background-color: #3160df;
 		padding: 8px;
