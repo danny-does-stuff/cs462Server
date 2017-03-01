@@ -147,7 +147,7 @@
 <script type="text/javascript">
 	var clientID = <?php echo "'$clientID'"?>;
 	var baseURL = <?php echo "'$baseURL'"?>;
-	var user = <?php echo (isset($_SESSION['user']) ? json_encode($_SESSION['user']) : null); ?>;
+	var user = <?php echo (isset($_SESSION['user']) ? json_encode($_SESSION['user']) : 'null'); ?>;
 	console.log(user);
 
 	$('#foursquare-login').click(function() {
