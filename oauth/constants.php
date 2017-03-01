@@ -1,0 +1,6 @@
+<?php
+// $baseURL = 'http://localhost:8888';
+$baseURL = 'https://462.danny-harding.com';
+
+$clientID = 'LTNHKGWBGBQ1AOE2KZ1N1JM32H2I0C5H0XG4AYJHH5MISCA1';
+$clientSecret = 'BM2HK13RXDQWTHCDMMJTYSCJ0UIVBBDNTKLJXSN4PJNJVETT';

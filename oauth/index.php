@@ -1,4 +1,6 @@
 <?php
+	include 'constants.php';
+
 	if (session_status() == PHP_SESSION_NONE) {
 		session_start();
 	}
@@ -43,9 +45,15 @@
 		padding-top: 8px;
 	}
 
-	#right-content {
-		width: 80%;
+	#middle-content {
+		width: 30%;
 		padding: 8px;
+	}
+
+	#right-content {
+		width: 50%;
+		padding: 8px;
+		border-left: 1px solid gray;
 	}
 
 	.checkin {
@@ -75,6 +83,24 @@
 		margin-top: 16px;
 	}
 
+	#message-box {
+		padding: 8px;
+		background-color: #f5f5f5;
+		display: flex;
+	}
+
+	#message-sender {
+		margin-right: 8px;
+	}
+
+	#message {
+		width: 500px;
+	}
+
+	form {
+		margin-bottom: 0px;
+	}
+
 </style>
 <body>
 <div id="header">
@@ -89,25 +115,19 @@
 		$dir = new DirectoryIterator(__DIR__ . '/users');
 		foreach ($dir as $fileinfo) {
 			if (!$fileinfo->isDot() && substr($fileinfo->getFilename(), -5) === '.user') {
-				?>
-				<div id="user">
-					<?php
-					$user = json_decode(file_get_contents($fileinfo->getPathName()), true);
-					$div = "<div id='{$user['id']}' class='user' onclick='displayUserCheckin(\"{$user['id']}\")'>{$user['firstName']}";
-					if (array_key_exists('lastName', $user)) {
-						$div .= " {$user['lastName']}";
-					}
-					$div .= "</div>";
-					echo $div;
-					?>
-				</div>
-				<?php
+				$user = json_decode(file_get_contents($fileinfo->getPathName()), true);
+				$div = "<div id='{$user['id']}' class='user' onclick='displayUserCheckin(\"{$user['id']}\")'>{$user['firstName']}";
+				if (array_key_exists('lastName', $user)) {
+					$div .= " {$user['lastName']}";
+				}
+				$div .= "</div>";
+				echo $div;
 			}
 		}
 
 		?>
 	</div>
-	<div id="right-content">
+	<div id="middle-content">
 		<div id="account"></div>
 		<?php
 		if (!array_key_exists('foursquareID', $_SESSION)) {
@@ -125,19 +145,17 @@
 </body>
 
 <script type="text/javascript">
-	var clientID = 'LTNHKGWBGBQ1AOE2KZ1N1JM32H2I0C5H0XG4AYJHH5MISCA1';
+	var clientID = <?php echo "'$clientID'"?>;
+	var baseURL = <?php echo "'$baseURL'"?>;
+	var user = <?php echo json_encode($_SESSION['user']);?>;
+	console.log(user);
 
 	$('#foursquare-login').click(function() {
-		window.location.href = `https://foursquare.com/oauth2/authenticate?client_id=${clientID}&response_type=code&redirect_uri=https://462.danny-harding.com/oauth/redirect/code.php`;
+		window.location.href = `https://foursquare.com/oauth2/authenticate?client_id=${clientID}&response_type=code&redirect_uri=${baseURL}/oauth/redirect/code.php`;
 	});
 
 	$('#foursquare-logout').click(function() {
-		// $.ajax({
-		// 	url: '/oauth/logout.php',
-		// 	success: function(data) {
-				window.location.href = '/oauth/logout.php';
-		// 	}
-		// })
+		window.location.href = '/oauth/logout.php';
 	});
 
 <?php
@@ -145,6 +163,7 @@
 		echo "var accessToken = '{$_SESSION['accessToken']}'; \n";
 ?>
 		displayCurrentUsersCheckins();
+		addChatBox();
 <?php
 	}
 ?>
@@ -206,6 +225,24 @@
 		$('<div class="name">').html(name).appendTo($checkin);
 
 		$('<div class="checkins-count">').html('# of checkins: ' + count).appendTo($checkin);
+	}
+
+	function addChatBox() {
+		$('#content').append(`
+		<div id="right-content">
+			<span class="header">Chat</span>
+			<div id="chat-box">
+				
+			</div>
+			<div id="message-box">
+				<div id="message-sender">${user.firstName}${(user.lastName ? ' ' + user.lastName : '')}</div>
+				<form>
+					<input type="text" name="message" id="message" />
+					<button type="submit">Send</button>
+				</form>
+			</div>
+		</div>`
+		);
 	}
 </script>
 </html>
