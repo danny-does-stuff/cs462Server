@@ -1,0 +1,31 @@
+#page-body {
+	font-family: helvetica;
+}
+
+#conversation {
+	height: calc(100% - 40px);
+}
+
+.message {
+	padding: 4px;
+}
+
+.message-row {
+	display: flex;
+}
+
+.user-name {
+	padding-right: 4px;
+}
+
+#send-message-container {
+	height: 40px;
+}
+
+#message-input {
+	width: 80%;
+}
+
+.message-time {
+	font-size: 8px;
+}
