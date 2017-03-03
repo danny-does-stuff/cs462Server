@@ -1,22 +1,22 @@
 var nodes = {
-	'http://localhost:4040/postmessage': {
+	'http://localhost:8000/postmessage': {
 		user: 'Danny Harding',
-		peers: ['http://localhost:4141/postmessage', 'http://localhost:8080/postmessage'],
+		peers: ['http://localhost:8001/postmessage', 'http://localhost:8002/postmessage'],
 		seen: {}
 	},
-	'http://localhost:4141/postmessage': {
+	'http://localhost:8001/postmessage': {
 		user: 'Ashley Harding',
-		peers: ['http://localhost:4040/postmessage', 'http://localhost:8181/postmessage'],
+		peers: ['http://localhost:8000/postmessage', 'http://localhost:8003/postmessage'],
 		seen: {}
 	},
-	'http://localhost:8080/postmessage': {
+	'http://localhost:8002/postmessage': {
 		user: 'Paisley Grace',
-		peers: ['http://localhost:4141/postmessage', 'http://localhost:4040/postmessage', 'http://localhost:8181/postmessage'],
+		peers: ['http://localhost:8001/postmessage', 'http://localhost:8000/postmessage', 'http://localhost:8003/postmessage'],
 		seen: {}
 	},
-	'http://localhost:8181/postmessage': {
+	'http://localhost:8003/postmessage': {
 		user: 'Joe Mama',
-		peers: ['http://localhost:8080/postmessage'],
+		peers: ['http://localhost:8002/postmessage'],
 		seen: {}
 	}
 }
