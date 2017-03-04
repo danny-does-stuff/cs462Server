@@ -21,7 +21,7 @@ function storeRumor(message) {
 
 function storeMessage(message, endpoint) {
 	var messageData = message.id.split(':');
-	
+
 	if (endpoint) {
 		nodeManager.updateNode(endpoint, messageData[0], messageData[1]);
 	}
@@ -34,11 +34,6 @@ function storeMessage(message, endpoint) {
 	allMessages.push(message);
 	hashMessages[message.id] = message;
 	nodeManager.updateNode(constants.endpoint, messageData[0], messageData[1]);
-
-	console.log('STORED A MESSAGE');
-	console.log('all', allMessages);
-	console.log('hash', hashMessages);
-	console.log('nodes', nodeManager.nodes);
 }
 
 function isRumor(message) {
@@ -79,15 +74,10 @@ function handleMessage(message) {
 }
 
 function getMessageToSend(iKnowMore) {
-	console.log('in get Message');
 	var randomIndex = Math.floor(Math.random() * Object.keys(iKnowMore).length);
-	console.log('randomIndex', randomIndex);
 	var userID = Object.keys(iKnowMore)[randomIndex];
-	console.log('userID', userID);
 	var messageID = userID + ':' + iKnowMore[userID];
-	console.log('messageID', messageID);
 
-console.log('hashMessages', hashMessages);
 	return hashMessages[messageID];
 }
  //    Rumor Format

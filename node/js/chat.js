@@ -19,7 +19,7 @@ $(document).ready(function() {
 			}
 		});
 
-		addMessage(messageText, time);
+		addMessage(userName, messageText, time);
 		$('#message-input').val('');
 	});
 
@@ -29,16 +29,42 @@ $(document).ready(function() {
 		}
 	});
 
-	function addMessage(text, time) {
+	function addMessage(name, text, time) {
 		$('#conversation').append(`
 			<div class='message'>
 				<div class='message-row'>
-					<div class='user-name'>${userName}:</div>
+					<div class='user-name'>${name}:</div>
 					<div class='message-text'>${text}</div>
 				</div>
 				<div class='message-time'>${time}</div>
 			</div>
 		`);
 	}
+
+	setInterval(function() {
+		$.ajax({
+			url: 'http://localhost:' + port + '/messages',
+			type: 'get',
+			dataType: 'json',
+			success: function(result) {
+				$('#conversation').empty();
+				result.forEach(function(message) {
+					addMessage(message.user, message.text, message.time);
+				});
+			}
+		})
+	}, 3000);
+
+	// var socket = io('http://localhost:' + port);
+
+	// socket.on('connect', function() {
+	// 	console.log('connected on client');
+	// });
+
+	// socket.on('message', function(msg){
+	// 	console.log('received', msg);
+	// });
+
+	// socket.send('Hello world!');
 
 });

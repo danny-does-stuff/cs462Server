@@ -3,10 +3,12 @@ html
 		title Chat it up
 		style
 			include ../style/style.css
+		script(src='js/socket.io.1.7.3.min.js')
+		script(src='js/jquery-3.1.1.js')
 		script.
 			var userName = '#{name}';
+			var port = #{port};
 		script
-			include ../js/jquery-3.1.1.js
 			include ../js/chat.js
 	body
 		div(id='page-body')
