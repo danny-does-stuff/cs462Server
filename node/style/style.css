@@ -3,7 +3,8 @@
 }
 
 #conversation {
-	height: calc(100% - 40px);
+	height: calc(100% - 60px);
+	overflow-y: scroll;
 }
 
 .message {
@@ -19,11 +20,11 @@
 }
 
 #send-message-container {
-	height: 40px;
+	height: 30px;
 }
 
 #message-input {
-	width: 80%;
+	width: 70%;
 }
 
 .message-time {

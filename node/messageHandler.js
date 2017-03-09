@@ -12,6 +12,10 @@ function storeRumor(message) {
 		return;
 	}
 
+	if (!nodeManager.isPeer(message.EndPoint)) {
+		nodeManager.addPeer(message.EndPoint, message.Rumor.Originator);
+	}
+
 	storeMessage({
 		id: message.Rumor.MessageID,
 		user: message.Rumor.Originator,
@@ -64,7 +68,7 @@ function handleMessage(message) {
 	else if (isRumor(message)) {
 		storeRumor(message);
 	} else if (isWant(message)) {
-		for(var id in message.Want) {
+		for (var id in message.Want) {
 			nodeManager.updateNode(message.EndPoint, id, message.Want[id]);
 		}
 		

@@ -54,9 +54,7 @@ function generateRumor(want) {
 	if (Object.keys(iKnowMore).length == 0) {
 		return false;
 	}
-	console.log('iknowmore', iKnowMore);
 	var message = messageHandler.getMessageToSend(iKnowMore);
-	console.log('GOT MESSAGE', message);
 
 	return {
 		Rumor: {
@@ -89,7 +87,6 @@ function sendMessage(message, url) {
 			// console.log('other server gave an error', error);
 		}
 		if (!error && response.statusCode == 200) {
-			console.log('updating myself cause my friend got the message');
 			var messageData = message.id.split(':');
 			nodeManager.updateNode(url, messageData[0], messageData[1]);
 		}
@@ -98,9 +95,11 @@ function sendMessage(message, url) {
 
 function propogateMessage() {
 	var url = nodeManager.getPeer(constants.endpoint);
-	var message = prepareMessage(nodeManager.nodes[url].seen);
-	if (message !== false) {
-		sendMessage(message, url);
+	if (url) {
+		var message = prepareMessage(nodeManager.nodes[url].seen);
+		if (message !== false) {
+			sendMessage(message, url);
+		}
 	}
 }
 
@@ -110,18 +109,21 @@ module.exports = {
 	propogateMessage: propogateMessage
 }
 
- //    Rumor Format
- //    {"Rumor" : {"MessageID": "ABCD-1234-ABCD-1234-ABCD-1234:5" ,
- //                "Originator": "Phil",
- //                "Text": "Hello World!"
- //                },
- //     "EndPoint": "https://example.com/gossip/13244"
- //    }
+ // Rumor Format
+ //	{
+ //		"Rumor" : {
+ //			"MessageID": "ABCD-1234-ABCD-1234-ABCD-1234:5" ,
+ //			"Originator": "Phil",
+ //			"Text": "Hello World!"
+ //		},
+ //		"EndPoint": "https://example.com/gossip/13244"
+ //	}
 
-	// Want Format
-    // {"Want": {"ABCD-1234-ABCD-1234-ABCD-125A": 3,
-    //           "ABCD-1234-ABCD-1234-ABCD-129B": 5,
-    //           "ABCD-1234-ABCD-1234-ABCD-123C": 10
-    //          } ,
-    //  "EndPoint": "https://example.com/gossip/asff3"
-    // }
+//	Want Format
+//		{"Want": {
+//			"ABCD-1234-ABCD-1234-ABCD-125A": 3,
+//			"ABCD-1234-ABCD-1234-ABCD-129B": 5,
+//			"ABCD-1234-ABCD-1234-ABCD-123C": 10
+//		} ,
+//	"EndPoint": "https://example.com/gossip/asff3"
+// }

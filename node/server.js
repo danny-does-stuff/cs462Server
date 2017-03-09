@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser')
 var messageHandler = require('./messageHandler');
+var nodeManager = require('./nodeManager');
 var workQueue = require('./workQueue');
 var constants = require('./constants');
 var socket = require('./socket');
@@ -21,14 +22,14 @@ var server = require('http').createServer(app);
 app.get('/', function(req, res) {
 	res.render('chat', {
 		messages: messageHandler.messages,
-		name: constants.userName,
+		name: nodeManager.getMyUsername(),
 		id: constants.uuid,
 		port: constants.port
 	});
 });
 
 app.get('/messages', function(req, res) {
-	res.end(JSON.stringify(messageHandler.messages));
+	res.status(200).send(messageHandler.messages);
 });
 
 app.post('/postmessage', function(req, res) {
@@ -36,6 +37,15 @@ app.post('/postmessage', function(req, res) {
 	messageHandler.handle(message);
 });
 
+app.post('/addpeer', function(req, res) {
+	if (!req.body.url) {
+		res.status(400).send({'error': 'no url provided'});
+	}
+
+	nodeManager.addPeer(req.body.url);
+
+	res.status(200).send({'success': 'true'});
+});
 
 app.listen(constants.port);
 
