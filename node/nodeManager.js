@@ -1,6 +1,6 @@
 var constants = require('./constants');
-var urlBase = 'http://localhost';
-var postRoute = '/postmessage';
+var urlBase = constants.urlBase;
+var postRoute = constants.postRoute;
 
 var nodeURLs = [urlBase + ':8000' + postRoute, urlBase + ':8001' + postRoute, urlBase + ':8002' + postRoute, urlBase + ':8003' + postRoute];
 
