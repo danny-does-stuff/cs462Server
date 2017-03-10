@@ -35,6 +35,8 @@ app.get('/messages', function(req, res) {
 app.post('/postmessage', function(req, res) {
 	message = req.body;
 	messageHandler.handle(message);
+	
+	res.status(200).end({'success': 'true'});
 });
 
 app.post('/addpeer', function(req, res) {
