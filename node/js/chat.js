@@ -78,7 +78,7 @@ $(document).ready(function() {
 
 	setInterval(function() {
 		$.ajax({
-			url: 'http://localhost:' + port + '/messages',
+			url: '/messages',
 			type: 'get',
 			dataType: 'json',
 			success: function(result) {
