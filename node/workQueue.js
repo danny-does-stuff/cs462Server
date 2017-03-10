@@ -90,6 +90,10 @@ function sendMessage(message, url) {
 	request(options, function(error, response, body) {
 		if (error) {
 			console.log('other server gave an error', error);
+			console.log(`tried to hit ${url}`);
+			console.log('with message', message);
+			console.log(response);
+			console.log(body);
 		}
 
 		if (!error && response.statusCode == 200) {
