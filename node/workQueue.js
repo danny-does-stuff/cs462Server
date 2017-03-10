@@ -83,11 +83,11 @@ function sendMessage(message, url) {
 		url: url
 	}
 
-	console.log('sending message', message);
 	request(options, function(error, response, body) {
 		if (error) {
 			// console.log('other server gave an error', error);
 		}
+		console.log('splitting message', message);
 		if (!error && response.statusCode == 200) {
 			var messageData = message.id.split(':');
 			nodeManager.updateNode(url, messageData[0], messageData[1]);
