@@ -80,7 +80,7 @@ function sendMessage(message, url) {
 	var options = {
 		headers: {
 			'Content-Type': 'application/json'
-		}
+		},
 		method: 'post',
 		body: message,
 		json: true,
