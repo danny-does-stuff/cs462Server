@@ -32,7 +32,13 @@ nodes[nodeURLs[3]] = {
 
 function updateNode(endpoint, id, lastMessage) {
 	// only update lastMessage if it is greater than what we already know about node with given id.
-	if (!nodes[endpoint] || !nodes[endpoint].seen[id] || nodes[endpoint].seen[id] < lastMessage) {
+	if (!nodes[endpoint]) {
+		nodes[endpoint] = {
+			seen: {}
+		};
+	}
+
+	if (!nodes[endpoint].seen[id] || nodes[endpoint].seen[id] < lastMessage) {
 		nodes[endpoint].seen[id] = lastMessage;
 	}
 }
