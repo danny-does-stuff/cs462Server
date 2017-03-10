@@ -82,6 +82,8 @@ function sendMessage(message, url) {
 		json: true,
 		url: url
 	}
+
+	console.log('sending message', message);
 	request(options, function(error, response, body) {
 		if (error) {
 			// console.log('other server gave an error', error);
