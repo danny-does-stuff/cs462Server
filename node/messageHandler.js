@@ -2,13 +2,14 @@ var uuid = require('./constants').uuid;
 var nodeManager = require('./nodeManager');
 var constants = require('./constants');
 var workQueue = require('./workQueue');
+var messageChecker = require('./messages');
 
 var allMessages = [];
 var hashMessages = {};
 var messageNumber = 0;
 
 function storeRumor(message) {
-	if (!isRumor(message)) {
+	if (!messageChecker.isRumor(message)) {
 		return;
 	}
 
@@ -40,18 +41,6 @@ function storeMessage(message, endpoint) {
 	nodeManager.updateNode(constants.endpoint, messageData[0], messageData[1]);
 }
 
-function isRumor(message) {
-	return message.hasOwnProperty('Rumor');
-}
-
-function isWant(message) {
-	return message.hasOwnProperty('Want');
-}
-
-function isFromSelf(message) {
-	return message.userID === uuid;
-}
-
 function fillOutMessage(message) {
 	var messageID = uuid + ':' + messageNumber++;
 
@@ -61,13 +50,13 @@ function fillOutMessage(message) {
 }
 
 function handleMessage(message) {
-	if (isFromSelf(message)) {
+	if (messageChecker.isFromSelf(message)) {
 		fillOutMessage(message);
 		storeMessage(message);
 	}
-	else if (isRumor(message)) {
+	else if (messageChecker.isRumor(message)) {
 		storeRumor(message);
-	} else if (isWant(message)) {
+	} else if (messageChecker.isWant(message)) {
 		for (var id in message.Want) {
 			nodeManager.updateNode(message.EndPoint, id, message.Want[id]);
 		}

@@ -1,6 +1,7 @@
 var request = require('request');
 var nodeManager = require('./nodeManager');
 var constants = require('./constants');
+var messageChecker = require('./messages');
 
 var queue = [];
 
@@ -89,8 +90,10 @@ function sendMessage(message, url) {
 		}
 		console.log('splitting message', message);
 		if (!error && response.statusCode == 200) {
-			var messageData = message.id.split(':');
-			nodeManager.updateNode(url, messageData[0], messageData[1]);
+			if (messageChecker.isRumor(message)) {
+				var messageData = message.Rumor.MessageID.split(':');
+				nodeManager.updateNode(url, messageData[0], messageData[1]);
+			}
 		}
 	});
 }
