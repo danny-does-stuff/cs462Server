@@ -52,6 +52,8 @@ function addPeer(endpoint, name) {
 	var currPeers = nodes[constants.endpoint].peers;
 	if (!currPeers.includes(endpoint)) {
 		nodes[constants.endpoint].peers.push(endpoint);
+		console.log('added peer');
+		console.log(nodes[constants.endpoint].peers);
 	}
 
 	if (!nodes.hasOwnProperty(endpoint)) {

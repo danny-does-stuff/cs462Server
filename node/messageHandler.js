@@ -14,6 +14,7 @@ function storeRumor(message) {
 	}
 
 	if (!nodeManager.isPeer(message.EndPoint)) {
+		console.log('storing rumor so adding peer: ', message.EndPoint);
 		nodeManager.addPeer(message.EndPoint, message.Rumor.Originator);
 	}
 

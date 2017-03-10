@@ -86,9 +86,9 @@ function sendMessage(message, url) {
 
 	request(options, function(error, response, body) {
 		if (error) {
-			// console.log('other server gave an error', error);
+			console.log('other server gave an error', error);
 		}
-		console.log('splitting message', message);
+		
 		if (!error && response.statusCode == 200) {
 			if (messageChecker.isRumor(message)) {
 				var messageData = message.Rumor.MessageID.split(':');
