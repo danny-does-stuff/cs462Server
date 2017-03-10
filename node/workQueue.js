@@ -78,6 +78,9 @@ function generateWant() {
 
 function sendMessage(message, url) {
 	var options = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
 		method: 'post',
 		body: message,
 		json: true,
@@ -88,7 +91,7 @@ function sendMessage(message, url) {
 		if (error) {
 			console.log('other server gave an error', error);
 		}
-		
+
 		if (!error && response.statusCode == 200) {
 			if (messageChecker.isRumor(message)) {
 				var messageData = message.Rumor.MessageID.split(':');
