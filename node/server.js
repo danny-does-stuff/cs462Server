@@ -33,7 +33,7 @@ app.get('/messages', function(req, res) {
 });
 
 app.post('/postmessage', function(req, res) {
-	console.log('referer', req.get('Referrer'));
+	console.log('referer', req);
 	message = req.body;
 	messageHandler.handle(message);
 
